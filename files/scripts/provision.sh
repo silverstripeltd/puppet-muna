@@ -18,6 +18,5 @@ fi
 
 systemctl reload apache2
 
-if [ "$(systemctl is-active nginx)" != "unknown" ]; then
-    systemctl reload nginx
-fi
+# Only try to reload nginx if it is installed and running
+(systemctl is-active --quiet nginx && nginx -t && systemctl reload nginx) || true
