@@ -19,11 +19,18 @@ class muna::install inherits muna {
 		$proxy_environment = []
 	}
 
+	# default to previous test if version not available
+	if $muna_binary_version {
+		$exec_test = "[ ! -f /opt/muna/bin/muna ] || [ ${muna_binary_version} != `/opt/muna/bin/muna version | head -n 1 | cut -d ' ' -f2` ]"
+	} else {
+		$exec_test = "test ! -f /opt/muna/bin/muna"
+	}
+
 	exec { "muna_download":
 		command => "curl -s -f ${download_link} -o /opt/muna/bin/muna",
 		path => '/usr/bin:/usr/sbin:/bin',
 		environment => $proxy_environment,
-		onlyif => "test ! -f /opt/muna/bin/muna",
+		onlyif => $exec_test,
 		require => File["/opt/muna/bin"]
 	}
 

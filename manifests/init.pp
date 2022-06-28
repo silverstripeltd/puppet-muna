@@ -1,5 +1,6 @@
 class muna (
 	$download_link,
+	$muna_binary_version = undef,
 	$enabled = false,
 	$aws_key = undef,
 	$aws_secret = undef,
